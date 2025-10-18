@@ -1,5 +1,5 @@
 <section class="signin-container">
-	<form class="signin-form" novalidate>
+	<form class="signin-form" novalidate (submit)="submit($event)">
 		<h2>Create an account</h2>
 
 		<div class="form-row">
@@ -30,13 +30,10 @@
 		<div class="form-actions">
 			<button type="submit">Sign up</button>
 		</div>
+
+		<div class="form-footer">
+			<a class="link-login" href="#">Log in</a>
+			<a class="link-forgot" href="#">Forgot your password?</a>
+		</div>
 	</form>
 </section>
-
-<ng-component *ngIf="isLoggedIn">
-  <section class="signin-form">
-    <h2>Welcome Back!</h2>
-    <p>You are now logged in.</p>
-    <button (click)="toggleLogin()">Log Out</button>
-  </section>
-</ng-component>

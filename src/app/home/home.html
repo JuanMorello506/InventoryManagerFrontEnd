@@ -39,10 +39,15 @@
           <i class="fa fa-cog" aria-hidden="true"></i>
           <a routerLink="settings" routerLinkActive="active">Settings</a>
         </li>
-        <li>
+        <li *ngIf="!authService.isLoggedIn()">
           <i class="fa fa-sign-in" aria-hidden="true"></i>
           <a routerLink="login-sign-in" routerLinkActive="active">Sign In</a>
         </li>
+        <li *ngIf="authService.isLoggedIn()">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <a (click)="authService.logout()">Log Out</a>
+        </li>
+
       </ul>
     </nav>
   </aside>

@@ -68,3 +68,21 @@
 .form-actions button:hover {
     background-color: #0197a0;
 }
+
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.6rem;
+}
+
+.form-footer a {
+    color: #00adb5;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.form-footer a:hover {
+    color: #0197a0;
+}
