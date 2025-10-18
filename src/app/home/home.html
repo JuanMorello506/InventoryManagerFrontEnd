@@ -1,0 +1,53 @@
+<div class="container">
+  <aside class="sidebar">
+    <h1>IMR</h1>
+    <nav>
+      <ul>
+        <li>
+          <i class="fa fa-tachometer" aria-hidden="true"></i>
+          <a routerLink="dashboard" routerLinkActive="active">Dashboard</a>
+        </li>
+        <li>
+          <i class="fa fa-box" aria-hidden="true"></i>
+          <a routerLink="products" routerLinkActive="active">Products</a>
+        </li>
+        <li>
+          <i class="fa fa-exchange" aria-hidden="true"></i>
+          <a routerLink="transactions" routerLinkActive="active">Transactions</a>
+        </li>
+        <li>
+          <i class="fa fa-th-large" aria-hidden="true"></i>
+          <a routerLink="categories" routerLinkActive="active">Categories</a>
+        </li>
+        <li>
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+          <a routerLink="purchase" routerLinkActive="active">Purchase</a>
+        </li>
+        <li>
+          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+          <a routerLink="sell" routerLinkActive="active">Sell</a>
+        </li>
+        <li>
+          <i class="fa fa-truck" aria-hidden="true"></i>
+          <a routerLink="suppliers" routerLinkActive="active">Suppliers</a>
+        </li>
+        <li>
+          <i class="fa fa-user" aria-hidden="true"></i>
+          <a routerLink="profile" routerLinkActive="active">Profile</a>
+        </li>
+        <li>
+          <i class="fa fa-cog" aria-hidden="true"></i>
+          <a routerLink="settings" routerLinkActive="active">Settings</a>
+        </li>
+        <li>
+          <i class="fa fa-sign-in" aria-hidden="true"></i>
+          <a routerLink="login-sign-in" routerLinkActive="active">Sign In</a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
