@@ -1,0 +1,24 @@
+<section class="signin-container">
+	<form class="signin-form" novalidate (submit)="logIn($event)">
+		<h2>Log In</h2>
+
+		<div class="form-row">
+			<label for="username">Username</label>
+			<input id="username" name="username" type="text" placeholder="Choose a username" required />
+		</div>
+
+		<div class="form-row">
+			<label for="password">Password</label>
+			<input id="password" name="password" type="password" placeholder="Create a password" required />
+		</div>
+
+		<div class="form-actions">
+			<button type="submit">Log In</button>
+		</div>
+
+		<div class="form-footer">
+			<a routerLink="/signIn" routerLinkActive="active" class="link-login" (click)="changeToSignIn()">Create an account</a>
+			<a class="link-forgot" href="#">Forgot your password?</a>
+		</div>
+	</form>
+</section>

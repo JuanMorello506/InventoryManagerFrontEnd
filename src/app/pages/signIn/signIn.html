@@ -1,5 +1,5 @@
 <section class="signin-container">
-	<form class="signin-form" novalidate (submit)="submit($event)">
+	<form class="signin-form" novalidate (submit)="signIn($event)">
 		<h2>Create an account</h2>
 
 		<div class="form-row">
@@ -32,8 +32,7 @@
 		</div>
 
 		<div class="form-footer">
-			<a class="link-login" href="#">Log in</a>
-			<a class="link-forgot" href="#">Forgot your password?</a>
+			<a routerLink="/logIn" routerLinkActive="active" class="link-login" (click)="changeToLogIn()">Already have an account? Log in</a>
 		</div>
 	</form>
 </section>
