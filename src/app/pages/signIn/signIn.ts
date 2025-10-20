@@ -1,34 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './signIn.html',
   styleUrls: ['./signIn.css']
 })
-export class SignIn {
-  constructor(private authService: AuthService, private router: Router) {}
-  
-  signIn(event: Event) {
-    event.preventDefault();
+export class SignIn implements OnInit {
+  message = '';
+  isError = false;
+  signUpForm!: FormGroup;
 
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const credentials = {
-      username: formData.get('username') as string,
-      password: formData.get('password') as string,
-      firstName: formData.get('firstName') as string,
-      lastName: formData.get('lastName') as string,
-      email: formData.get('email') as string
-    };
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
 
-    this.authService.register(credentials).subscribe(success => {
-      if (success) {
-        this.router.navigate(['dashboard']);
+  ngOnInit() {
+    this.signUpForm = this.fb.group({
+      Name: ['', Validators.required],
+      Surname: ['', Validators.required],
+      Username: ['', Validators.required],
+      Email: ['', [Validators.required, Validators.email]],
+      Password: ['', Validators.required]
+    });
+  }
+
+  signIn() {
+    
+    if (this.signUpForm.invalid) {
+      this.isError = true;
+      this.message = 'Please fill in all required fields correctly.';
+      return;
+    }
+
+    const credentials = this.signUpForm.value;
+
+    this.authService.register(credentials).subscribe(result => {
+      console.log('Register response:', result);
+      if (result.success) {
+        this.isError = false;
+        this.message = result.message || 'Registration successful!';
+        setTimeout(() => this.router.navigate(['dashboard']), 1000);
       } else {
-        // Handle login error
+        this.isError = true;
+        this.message = result.message || 'Registration failed. Please try again.';
       }
     });
   }
@@ -36,5 +56,4 @@ export class SignIn {
   changeToLogIn() {
     this.router.navigate(['/logIn']);
   }
-
 }

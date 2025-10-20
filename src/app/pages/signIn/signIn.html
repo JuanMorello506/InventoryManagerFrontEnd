@@ -1,38 +1,46 @@
+
+<div *ngIf="message" [class.error-message]="isError" [class.success-message]="!isError">
+    <p>{{ message }}</p>
+</div>
+
 <section class="signin-container">
-	<form class="signin-form" novalidate (submit)="signIn($event)">
-		<h2>Create an account</h2>
+  <form class="signin-form" [formGroup]="signUpForm" (ngSubmit)="signIn()">
+    <h2>Create an account</h2>
 
-		<div class="form-row">
-			<label for="firstName">First name</label>
-			<input id="firstName" name="firstName" type="text" placeholder="Enter your first name" required />
-		</div>
+    <div class="form-row">
+      <label for="Name">First name</label>
+      <input id="Name" type="text" placeholder="Enter your first name" formControlName="Name" />
+    </div>
 
-		<div class="form-row">
-			<label for="lastName">Last name</label>
-			<input id="lastName" name="lastName" type="text" placeholder="Enter your last name" required />
-		</div>
+    <div class="form-row">
+      <label for="Surname">Last name</label>
+      <input id="Surname" type="text" placeholder="Enter your last name" formControlName="Surname" />
+    </div>
 
-		<div class="form-row">
-			<label for="username">Username</label>
-			<input id="username" name="username" type="text" placeholder="Choose a username" required />
-		</div>
+    <div class="form-row">
+      <label for="Username">Username</label>
+      <input id="Username" type="text" placeholder="Choose a username" formControlName="Username" />
+    </div>
 
-		<div class="form-row">
-			<label for="email">Email</label>
-			<input id="email" name="email" type="email" placeholder="you@example.com" required />
-		</div>
+    <div class="form-row">
+      <label for="Email">Email</label>
+      <input id="Email" type="email" placeholder="you@example.com" formControlName="Email" />
+    </div>
 
-		<div class="form-row">
-			<label for="password">Password</label>
-			<input id="password" name="password" type="password" placeholder="Create a password" required />
-		</div>
+    <div class="form-row">
+      <label for="Password">Password</label>
+      <input id="Password" type="password" placeholder="Create a password" formControlName="Password" />
+    </div>
 
-		<div class="form-actions">
-			<button type="submit">Sign up</button>
-		</div>
+    <div class="form-actions">
+      <button type="submit" [disabled]="signUpForm.invalid">Sign up</button>
+    </div>
 
-		<div class="form-footer">
-			<a routerLink="/logIn" routerLinkActive="active" class="link-login" (click)="changeToLogIn()">Already have an account? Log in</a>
-		</div>
-	</form>
+    <div class="form-footer">
+      <a routerLink="/logIn" class="link-login" (click)="changeToLogIn()">
+        Already have an account? Log in
+      </a>
+    </div>
+  </form>
+
 </section>

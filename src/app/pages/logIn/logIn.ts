@@ -1,37 +1,50 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-login-sign-in',
+  selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './logIn.html',
   styleUrls: ['./logIn.css']
 })
-export class LogIn {
+export class LogIn implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private fb = inject(FormBuilder);
 
-  logIn(event: Event) {
-    event.preventDefault();
+  loginForm!: FormGroup;
+  message = '';
+  isError = false;
 
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const credentials = {
-      username: formData.get('username') as string,
-      password: formData.get('password') as string
-    };
+  ngOnInit() {
+    this.loginForm = this.fb.group({
+      Username: ['', Validators.required],
+      Password: ['', Validators.required]
+    });
+  }
 
-    this.authService.login(credentials).subscribe(success => {
-      if (success) {
+  logIn() {
+    if (this.loginForm.invalid) {
+      this.message = 'Please fill in all fields';
+      this.isError = true;
+      return;
+    }
+
+    const credentials = this.loginForm.value;
+
+    this.authService.login(credentials).subscribe(result => {
+      console.log('Login response:', result);
+      if (result.success) {
+        this.isError = false;
+        this.message = 'Login successful';
         this.router.navigate(['dashboard']);
       } else {
-        // TODO: Handle login error
-        console.error('Login failed');
-        alert('Login failed');
+        this.message = result.message || 'Login failed';
+        this.isError = true;
       }
     });
   }
@@ -39,6 +52,4 @@ export class LogIn {
   changeToSignIn() {
     this.router.navigate(['/signIn']);
   }
-
-  
 }

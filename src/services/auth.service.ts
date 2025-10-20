@@ -1,11 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { tap, catchError, map, of, Observable } from 'rxjs';
-
-interface LoginResponse {
-  token: string;
-  [key: string]: any;
-}
+import { LoginResponse } from '../../interfaces/login-response.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,24 +12,46 @@ export class AuthService {
     this.isLoggedIn.set(!!localStorage.getItem('access_token'));
   }
 
-  register(payload: { firstName: string; lastName: string; username: string; email: string; password: string; }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, payload).pipe(
-      catchError(err => of(err))
+  register(payload: { Name: string; Surname: string; Username: string; Email: string; Password: string; }): Observable<{ success: boolean; message?: string }> {
+      return this.http.post<{ message?: string }>(`${this.baseUrl}/register`, payload).pipe(
+        map(response => {
+          this.isLoggedIn.set(true);
+          return {
+            success: true,
+            message: response?.message || 'Registration successful'
+          };
+        }),
+        catchError((error: HttpErrorResponse) => {
+          const message =
+            error.error?.message || 
+            'Server error during registration';
+          return of({ success: false, message });
+        })
     );
   }
 
-  login(credentials: { username: string; password: string; }): Observable<boolean> {
+  login(credentials: { Username: string; Password: string; }): Observable<{ success: boolean; message?: string }> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, credentials).pipe(
-      tap(res => {
+      map(res => {
         if (res && res.token) {
+          // Save token and user info
           localStorage.setItem('access_token', res.token);
+          localStorage.setItem('user', JSON.stringify(res.user));
+
           this.isLoggedIn.set(true);
+          return { success: true, message: res.message || 'Login successful' };
         }
+        return { success: false, message: res?.['message'] || 'Login failed' };
       }),
-      map(res => !!res.token),
-      catchError(() => of(false))
+      catchError((error: HttpErrorResponse) => {
+        const message =
+          error.error?.message || 
+          (error.status === 401 ? 'Invalid username or password' : 'Server error');
+        return of({ success: false, message });
+      })
     );
   }
+
 
   logout(): void {
     localStorage.removeItem('access_token');
